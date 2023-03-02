@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "148854880609",
+    "project_id": "ud-ho-tro-cham-soc-cay",
+    "storage_bucket": "ud-ho-tro-cham-soc-cay.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148854880609:android:e8a5772c585f6e19dead20",
+        "android_client_info": {
+          "package_name": "com.example.chamsoccaytrong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148854880609-fi605qor1dohc5jl9cf9a1cshp7ena5d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chamsoccaytrong",
+            "certificate_hash": "50f7987a53789af685755ddfe89bff500f130f56"
+          }
+        },
+        {
+          "client_id": "148854880609-t35i55d1cb81npld1bg21bp04rpmaena.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcbq2SXXHXZADtpYzD4BxZmc2FSHfZSSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148854880609-t35i55d1cb81npld1bg21bp04rpmaena.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "148854880609-tqs7vv1ch1bvrkel513ulgbs2u6a42st.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.chamsoccaytrong"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
