@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../constants/function/on_will_pop.dart';
+import 'analytic/analytic_page.dart';
 
 
 class MainPage extends StatefulWidget {
@@ -21,6 +22,7 @@ class _MainPageState extends State<MainPage> {
   List<Widget> screens = [
     const HomePage(),
     const CalendarPage(),
+    const AnalyticPage(),
     const SettingPage()
   ];
 
@@ -69,11 +71,11 @@ class _MainPageState extends State<MainPage> {
                     },
                   ),
                   itemBottomTab(
-                    text: "Calendar",
+                    text: "Crops",
                     index: 1,
                     current: currentTab,
                     size: 28,
-                    icon: Icons.calendar_month_outlined,
+                    icon: Icons.streetview_rounded,
                     action: () {
                       setState(() {
                         currentTab = 1;
@@ -86,10 +88,10 @@ class _MainPageState extends State<MainPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   itemBottomTab(
-                    text: "Analytic",
+                    text: "community",
                     index: 2,
                     current: currentTab,
-                    icon: FontAwesomeIcons.chartPie,
+                    icon: FontAwesomeIcons.user,
                     action: () {
                       setState(() {
                         currentTab = 2;
