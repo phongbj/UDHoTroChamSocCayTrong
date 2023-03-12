@@ -4,7 +4,6 @@ import '../../constants/app_colors.dart';
 import '../login/widget/custom_button.dart';
 import '../login/widget/input_text.dart';
 
-
 class ForgotPage extends StatefulWidget {
   const ForgotPage({Key? key}) : super(key: key);
 
@@ -25,11 +24,9 @@ class _ForgotPageState extends State<ForgotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
       appBar: AppBar(
-        backgroundColor: AppColors.whisperBackground,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.grey),
+        backgroundColor: Colors.transparent,
       ),
       body: Form(
         key: _formKey,
@@ -37,21 +34,22 @@ class _ForgotPageState extends State<ForgotPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              const Text(
-                "Forgot Password?",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              Text(
+                ('forgot_password'),
+                style:
+                const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              const Text(
+              Text(
                 textAlign: TextAlign.center,
-                "Don't worry! It happens. Please enter the email address with your account!",
-                style: TextStyle(
+                ('don_worry_it_happens'),
+                style: const TextStyle(
                   fontSize: 18,
                 ),
               ),
               const SizedBox(height: 50),
-              inputText(
-                hint: "Username",
+              InputText(
+                hint: "Email",
                 validator: 0,
                 controller: _emailController,
                 inputType: TextInputType.emailAddress,
@@ -66,13 +64,11 @@ class _ForgotPageState extends State<ForgotPage> {
                       if (!mounted) return;
                       Navigator.pushNamedAndRemoveUntil(
                           context, '/success', (route) => false);
-                    } catch (e) {
-                      print(e);
-                    }
+                    } catch (_) {}
                     return;
                   }
                 },
-                text: 'Submit',
+                text: ('submit'),
               ),
             ],
           ),

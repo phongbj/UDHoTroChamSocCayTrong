@@ -7,6 +7,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_styles.dart';
 import '../../../constants/function/on_will_pop.dart';
+import '../../../constants/function/route_function.dart';
+import 'input_wallet.dart';
 
 
 class VerifyPage extends StatefulWidget {
@@ -60,15 +62,12 @@ class _VerifyPageState extends State<VerifyPage> {
       setState(() => canResendEmail = false);
       Future.delayed(const Duration(seconds: 5));
       setState(() => canResendEmail = true);
-    } catch (e) {
-      print(e);
-    }
+    } catch (_) {}
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whisperBackground,
       body: WillPopScope(
         onWillPop: () => onWillPop(
           action: (now) => currentBackPressTime = now,
@@ -79,9 +78,9 @@ class _VerifyPageState extends State<VerifyPage> {
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
             child: Column(
               children: [
-                const Text(
-                  "Verify Email",
-                  style: TextStyle(
+                Text(
+                  ("verify_email"),
+                  style: const TextStyle(
                     fontSize: 25,
                     color: Colors.red,
                     fontWeight: FontWeight.bold,
@@ -91,8 +90,9 @@ class _VerifyPageState extends State<VerifyPage> {
                 Text(
                   textAlign: TextAlign.center,
                   isEmailVerify
-                      ? "Chúc mừng bạn!\nEmail của bạn đã được xác thực!"
-                      : "Vui lòng kiểm tra email và xác thực email của bạn!",
+                      ? ('congratulation_your_email_verified')
+                      : (
+                      'please_check_your_email_verify_your_email'),
                   style: const TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 20),
@@ -109,10 +109,15 @@ class _VerifyPageState extends State<VerifyPage> {
                     height: 50,
                     child: ElevatedButton.icon(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/main');
+                        Navigator.of(context).pushReplacement(
+                          createRoute(screen: const InputWalletPage()),
+                        );
                       },
                       icon: const Icon(FontAwesomeIcons.house),
-                      label: Text("Go to Home", style: AppStyles.p),
+                      label: Text(
+                        ("go_to_home"),
+                        style: AppStyles.p,
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.buttonLogin,
                         shape: RoundedRectangleBorder(
@@ -128,11 +133,13 @@ class _VerifyPageState extends State<VerifyPage> {
                     child: ElevatedButton.icon(
                       onPressed: canResendEmail
                           ? () {
-                              sendVerificationEmail();
-                            }
+                        sendVerificationEmail();
+                      }
                           : null,
                       icon: const Icon(FontAwesomeIcons.envelope),
-                      label: Text("Resend email", style: AppStyles.p),
+                      label: Text(
+                          ("resend_email"),
+                          style: AppStyles.p),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.buttonLogin,
                         shape: RoundedRectangleBorder(
@@ -147,9 +154,12 @@ class _VerifyPageState extends State<VerifyPage> {
                     onPressed: () {
                       FirebaseAuth.instance.signOut();
                       Navigator.pushNamedAndRemoveUntil(
-                          context, '/', (route) => false);
+                          context, '/login', (route) => false);
                     },
-                    child: Text("Cancel", style: AppStyles.p),
+                    child: Text(
+                      ("cancel"),
+                      style: AppStyles.p,
+                    ),
                   )
               ],
             ),

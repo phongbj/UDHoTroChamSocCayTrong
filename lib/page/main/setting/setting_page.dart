@@ -21,7 +21,8 @@ class _SettingPageState extends State<SettingPage> {
               await GoogleSignIn().signOut();
               await FacebookAuth.instance.logOut();
               if (!mounted) return;
-              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/login', (route) => false);
             },
             child: const Text("Đăng xuất")),
       ),
