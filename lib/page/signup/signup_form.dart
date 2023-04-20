@@ -1,15 +1,10 @@
-import 'package:chamsoccaytrong/page/signup/verify/verify_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 import '../../constants/app_styles.dart';
-import '../../constants/function/loading_animation.dart';
-import '../../constants/function/route_function.dart';
 import '../../models/user.dart';
-import '../login/login_page.dart';
 import '../login/widget/custom_button.dart';
 import '../login/widget/input_password.dart';
 import '../login/widget/input_text.dart';
@@ -31,12 +26,11 @@ class _SignupFormState extends State<SignupForm> {
   final TextEditingController _userController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
-  TextEditingController();
+      TextEditingController();
   final _formKey = GlobalKey<FormState>();
   DateTime birthday = DateTime.now();
   bool hide = true;
   bool gender = true;
-  bool check = true;
 
   @override
   void dispose() {
@@ -51,25 +45,24 @@ class _SignupFormState extends State<SignupForm> {
   Widget build(BuildContext context) {
     return BlocBuilder<SignupBloc, SignupState>(
       builder: (context, state) {
-        if (state is SignupSuccessState && check) {
-          Navigator.pop(context);
-          Fluttertoast.showToast(
-              msg: ("create-account-success"));
+        if (state is SignupSuccessState) {
           SchedulerBinding.instance.addPostFrameCallback((_) {
+            var snackBar =
+                const SnackBar(content: Text('Tạo tài khoản thành công'));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Future.delayed(const Duration(seconds: 3), () {
-              Navigator.of(context).pushReplacement(
-                createRoute(screen: const VerifyPage()),
-              );
+              Navigator.pushReplacementNamed(context, "/verify");
             });
           });
         }
 
-        if (state is SignupErrorState && check) {
-          Navigator.pop(context);
-          Fluttertoast.showToast(
-              msg: (state.status));
+        if (state is SignupErrorState) {
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            var snackBar =
+                const SnackBar(content: Text('Không thể tạo tài khoản'));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          });
         }
-        check = true;
 
         return Form(
           key: _formKey,
@@ -78,27 +71,28 @@ class _SignupFormState extends State<SignupForm> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
               child: Column(
                 children: [
-                  Text(
-                    ('hello_new_user'),
-                    style: const TextStyle(
-                        fontSize: 25, fontWeight: FontWeight.bold),
+                  const Text(
+                    "Hello New User!",
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    ('welcome_to_app'),
-                    style: const TextStyle(fontSize: 20),
+                  const Text(
+                    "Welcome to App",
+                    style: TextStyle(fontSize: 20),
                   ),
                   const SizedBox(height: 50),
-                  InputText(
-                    hint: ('full_name'),
+                  inputText(
+                    hint: "Name",
                     validator: 1,
                     controller: _nameController,
                     inputType: TextInputType.name,
-                    textCapitalization: TextCapitalization.words,
                   ),
                   const SizedBox(height: 20),
-                  InputText(
-                    hint: "Email",
+                  inputText(
+                    hint: "Username",
                     validator: 0,
                     controller: _userController,
                     inputType: TextInputType.emailAddress,
@@ -107,23 +101,25 @@ class _SignupFormState extends State<SignupForm> {
                   Row(
                     children: [
                       const Spacer(),
-                      GenderWidget(
+                      genderWidget(
                           currentGender: gender,
                           gender: true,
                           action: () {
                             if (!gender) {
-                              check = false;
-                              setState(() => gender = true);
+                              setState(() {
+                                gender = true;
+                              });
                             }
                           }),
                       const Spacer(),
-                      GenderWidget(
+                      genderWidget(
                           currentGender: gender,
                           gender: false,
                           action: () {
                             if (gender) {
-                              check = false;
-                              setState(() => gender = false);
+                              setState(() {
+                                gender = false;
+                              });
                             }
                           }),
                       const Spacer(),
@@ -139,8 +135,9 @@ class _SignupFormState extends State<SignupForm> {
                         lastDate: DateTime.now(),
                       );
                       if (picked != null && picked != birthday) {
-                        check = false;
-                        setState(() => birthday = picked);
+                        setState(() {
+                          birthday = picked;
+                        });
                       }
                     },
                     child: Container(
@@ -149,7 +146,7 @@ class _SignupFormState extends State<SignupForm> {
                       width: double.infinity,
                       height: 57,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
@@ -169,22 +166,24 @@ class _SignupFormState extends State<SignupForm> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  InputPassword(
+                  inputPassword(
                     action: () {
-                      check = false;
-                      setState(() => hide = !hide);
+                      setState(() {
+                        hide = !hide;
+                      });
                     },
-                    hint: ('password'),
+                    hint: "Password",
                     controller: _passwordController,
                     hide: hide,
                   ),
                   const SizedBox(height: 20),
-                  InputPassword(
+                  inputPassword(
                     action: () {
-                      check = false;
-                      setState(() => hide = !hide);
+                      setState(() {
+                        hide = !hide;
+                      });
                     },
-                    hint: ('confirm_password'),
+                    hint: "Confirm Password",
                     controller: _confirmPasswordController,
                     password: _passwordController,
                     hide: hide,
@@ -193,16 +192,14 @@ class _SignupFormState extends State<SignupForm> {
                   customButton(
                     action: () {
                       if (_formKey.currentState!.validate()) {
-                        loadingAnimation(context);
                         BlocProvider.of<SignupBloc>(context).add(
                           SignupEmailPasswordEvent(
                             email: _userController.text.trim(),
                             password: _passwordController.text,
                             user: User(
                               name: _nameController.text.trim(),
-                              money: 0,
                               birthday:
-                              DateFormat("dd/MM/yyyy").format(birthday),
+                                  DateFormat("dd/MM/yyyy").format(birthday),
                               gender: gender,
                               avatar: "",
                             ),
@@ -211,24 +208,22 @@ class _SignupFormState extends State<SignupForm> {
                         return;
                       }
                     },
-                    text: ('sign_up'),
+                    text: 'Sign Up',
                   ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        ('have_account'),
+                        "Have an account?",
                         style: AppStyles.p,
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                            createRoute(screen: const LoginPage()),
-                          );
+                          Navigator.pushReplacementNamed(context, '/login');
                         },
                         child: Text(
-                          ('login_now'),
+                          "Login now",
                           style: AppStyles.p,
                         ),
                       )

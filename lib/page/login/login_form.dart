@@ -6,17 +6,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../constants/app_styles.dart';
-import '../../constants/function/loading_animation.dart';
-import '../../constants/function/route_function.dart';
-import '../forgot/forgot_page.dart';
-import '../signup/signup_page.dart';
 import 'bloc/login_bloc.dart';
 import 'bloc/login_event.dart';
 import 'bloc/login_state.dart';
+
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -30,7 +26,6 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool hide = true;
-  bool check = true;
 
   @override
   void dispose() {
@@ -43,32 +38,24 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        if (state is LoginSuccessState && check) {
-          if (state.social == Social.email) {
-            Navigator.pop(context);
-          }
-          Fluttertoast.showToast(
-              msg: ("login_success"));
+        if (state is LoginSuccessState) {
           SchedulerBinding.instance.addPostFrameCallback((_) {
             if (state.social == Social.email &&
                 !FirebaseAuth.instance.currentUser!.emailVerified) {
               Navigator.pushReplacementNamed(context, "/verify");
             } else {
-              if (state.social == Social.newUser) {
-                Navigator.pushReplacementNamed(context, '/wallet');
-              } else {
-                Navigator.pushReplacementNamed(context, "/main");
-              }
+              Navigator.pushReplacementNamed(context, "/main");
             }
           });
         }
 
-        if (state is LoginErrorState && check) {
-          Navigator.pop(context);
-          Fluttertoast.showToast(
-              msg: (state.status));
+        if (state is LoginErrorState) {
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            var snackBar = const SnackBar(
+                content: Text('Tài khoản hoặc mật khẩu không đúng'));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          });
         }
-        check = true;
 
         return Form(
           key: _formKey,
@@ -77,33 +64,33 @@ class _LoginFormState extends State<LoginForm> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
               child: Column(
                 children: [
-                  Text(
-                    ('hello_again'),
-                    style: const TextStyle(
+                  const Text(
+                    "Hello Again!",
+                    style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    ('welcome_back_you_been_missed'),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 20),
+                  const Text(
+                    "Welcome back you've been missed",
+                    style: TextStyle(fontSize: 20),
                   ),
                   const SizedBox(height: 50),
-                  InputText(
-                    hint: "Email",
+                  inputText(
+                    hint: "Username",
                     validator: 0,
                     controller: _userController,
                     inputType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 20),
-                  InputPassword(
+                  inputPassword(
                     action: () {
-                      check = false;
-                      setState(() => hide = !hide);
+                      setState(() {
+                        hide = !hide;
+                      });
                     },
-                    hint: ('password'),
+                    hint: "Password",
                     controller: _passwordController,
                     hide: hide,
                   ),
@@ -111,21 +98,16 @@ class _LoginFormState extends State<LoginForm> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(createRoute(
-                            screen: const ForgotPage(),
-                            begin: const Offset(1, 0),
-                          ));
-                        },
-                        child: Text(('forgot_password')),
-                      ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/forgot');
+                          },
+                          child: const Text("Forgot Password?")),
                     ],
                   ),
                   const SizedBox(height: 20),
                   customButton(
                     action: () {
                       if (_formKey.currentState!.validate()) {
-                        loadingAnimation(context);
                         BlocProvider.of<LoginBloc>(context).add(
                           LoginWithEmailPasswordEvent(
                             email: _userController.text.trim(),
@@ -135,10 +117,10 @@ class _LoginFormState extends State<LoginForm> {
                         return;
                       }
                     },
-                    text: ('sign_in'),
+                    text: 'Sign In',
                   ),
                   const SizedBox(height: 30),
-                  const TextContinue(),
+                  textContinue(),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +134,7 @@ class _LoginFormState extends State<LoginForm> {
                                   .add(LoginWithGoogleEvent());
                             },
                             icon: Image.asset(
-                              "assets/google_logo.png",
+                              "assets/logo/google_logo.png",
                               width: 20,
                             ),
                             label: const Text(
@@ -185,7 +167,7 @@ class _LoginFormState extends State<LoginForm> {
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                              const Color.fromRGBO(66, 103, 178, 1),
+                                  const Color.fromRGBO(66, 103, 178, 1),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -200,17 +182,15 @@ class _LoginFormState extends State<LoginForm> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        ('do_not_have_account'),
+                        "Do not have an account?",
                         style: AppStyles.p,
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                            createRoute(screen: const SignupPage()),
-                          );
+                          Navigator.pushReplacementNamed(context, '/signup');
                         },
                         child: Text(
-                          ('register_now'),
+                          "Register now",
                           style: AppStyles.p,
                         ),
                       )

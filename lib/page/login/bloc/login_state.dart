@@ -1,4 +1,4 @@
-enum Social { email, google, facebook, newUser }
+enum Social { email, google, facebook }
 
 abstract class LoginState {}
 
@@ -9,7 +9,4 @@ class LoginSuccessState extends LoginState {
   LoginSuccessState({required this.social});
 }
 
-class LoginErrorState extends LoginState {
-  String status;
-  LoginErrorState({required this.status});
-}
+class LoginErrorState extends LoginState {}
