@@ -50,7 +50,7 @@ class _ForgotPageState extends State<ForgotPage> {
                 ),
               ),
               const SizedBox(height: 50),
-              inputText(
+              InputText(
                 hint: "Username",
                 validator: 0,
                 controller: _emailController,

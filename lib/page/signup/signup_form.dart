@@ -84,14 +84,14 @@ class _SignupFormState extends State<SignupForm> {
                     style: TextStyle(fontSize: 20),
                   ),
                   const SizedBox(height: 50),
-                  inputText(
+                  InputText(
                     hint: "Name",
                     validator: 1,
                     controller: _nameController,
                     inputType: TextInputType.name,
                   ),
                   const SizedBox(height: 20),
-                  inputText(
+                  InputText(
                     hint: "Username",
                     validator: 0,
                     controller: _userController,
@@ -166,7 +166,7 @@ class _SignupFormState extends State<SignupForm> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  inputPassword(
+                  InputPassword(
                     action: () {
                       setState(() {
                         hide = !hide;
@@ -177,7 +177,7 @@ class _SignupFormState extends State<SignupForm> {
                     hide: hide,
                   ),
                   const SizedBox(height: 20),
-                  inputPassword(
+                  InputPassword(
                     action: () {
                       setState(() {
                         hide = !hide;
@@ -198,8 +198,9 @@ class _SignupFormState extends State<SignupForm> {
                             password: _passwordController.text,
                             user: User(
                               name: _nameController.text.trim(),
+                              money: 0,
                               birthday:
-                                  DateFormat("dd/MM/yyyy").format(birthday),
+                              DateFormat("dd/MM/yyyy").format(birthday),
                               gender: gender,
                               avatar: "",
                             ),
