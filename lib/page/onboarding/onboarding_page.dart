@@ -84,7 +84,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   InkWell(
                       onTap: (){
                         _pageController.nextPage(duration: const Duration(milliseconds: 800), curve: Curves.easeInOutQuint);
-                        if (currentPage == 2 ){Navigator.pushReplacementNamed(context, "/login");}
+                        if (currentPage == 2 ){Navigator.pushReplacementNamed(context, "/main");}
                       },
                       child: AnimatedContainer(duration: const Duration(milliseconds: 300),
                         height: 70,

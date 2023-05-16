@@ -13,10 +13,10 @@ import 'package:chamsoccaytrong/firebase_options.dart';
 
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
+   WidgetsFlutterBinding.ensureInitialized();
+   await Firebase.initializeApp(
 
-  );
+   );
   runApp(const MyApp());
 }
 
@@ -36,10 +36,11 @@ class MyApp extends StatelessWidget {
           : (FirebaseAuth.instance.currentUser!.emailVerified
           ? '/main'
           : '/verify'),
+      //initialRoute: "/",
       routes: {
         '/': (context) => const OnboardingPage(),
-        '/login': (context) => const LoginPage(),
-        '/signup': (context) => const SignupPage(),
+        // '/login': (context) => const LoginPage(),
+        // '/signup': (context) => const SignupPage(),
         '/home': (context) => const HomePage(),
         '/main': (context) => const MainPage(),
         '/forgot': (context) => const ForgotPage(),
